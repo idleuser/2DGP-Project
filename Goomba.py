@@ -23,7 +23,6 @@ class Goomba:
         self.image_die = load_image('goomba_die.png')
         if Goomba.image == None:
             self.image = load_image('goomba.png')
-        self.state_machine = StateMachine(self)
 
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time

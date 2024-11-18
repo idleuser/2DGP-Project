@@ -15,7 +15,6 @@ class SuperMushroom:
         self.dir = 1
         if SuperMushroom.image == None:
             self.image = load_image('super_mushroom.png')
-        self.state_machine = StateMachine(self)
 
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time

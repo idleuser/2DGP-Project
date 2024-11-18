@@ -1,5 +1,4 @@
 from pico2d import *
-
 import game_world, game_framework
 import title_mode
 from state_machine import *
@@ -98,9 +97,9 @@ class Jump:
             obj.safe = 0
         if get_time() - obj.time > 0.8:
             obj.state_machine.add_event(('TIME_OUT', obj.run))
-        if obj.y >= 270:
+        if obj.y >= 280:
             obj.limit = True
-        if obj.y < 270 and obj.limit == False:
+        if obj.y < 280 and obj.limit == False:
             obj.y += 50
         elif obj.y > 90:
             obj.y -= 50
@@ -128,6 +127,7 @@ class MiniMario:
         self.run = 0
         self.life = 1
         self.safe = 0
+        self.limit = False
         self.image = load_image('Mini_Mario.gif')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle)
@@ -150,7 +150,10 @@ class MiniMario:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 30,self.y - 30, self.x + 20, self.y + 20
+        if self.life == 1:
+            return self.x - 30,self.y - 30, self.x + 20, self.y + 20
+        if self.life == 2:
+            return self.x - 30, self.y - 30, self.x + 20, self.y + 65
 
     def handle_collision(self, group, other):
         if group == 'mario-kill':
@@ -163,3 +166,6 @@ class MiniMario:
                 game_framework.change_mode(title_mode)
         elif group == 'mario-super_mushroom':
             self.life = 2
+        elif group == 'mario-box':
+            self.y = other.y - 25
+            self.limit = True

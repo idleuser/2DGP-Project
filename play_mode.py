@@ -5,6 +5,7 @@ import title_mode
 from Goomba import Goomba
 from Mini_Mario import MiniMario
 from Super_Mushroom import SuperMushroom
+from box import Box
 
 
 def handle_events():
@@ -34,9 +35,13 @@ def init():
     super_mushroom = SuperMushroom()
     game_world.add_object(super_mushroom, 1)
 
+    box = Box()
+    game_world.add_object(box, 1)
+
     game_world.add_collision_pair('mario-kill', mario, goomba)
     game_world.add_collision_pair('mario-goomba', mario, goomba)
     game_world.add_collision_pair('mario-super_mushroom', mario, super_mushroom)
+    game_world.add_collision_pair('mario-box', mario, box)
 
 
 def finish():
