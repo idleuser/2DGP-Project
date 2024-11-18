@@ -2,7 +2,9 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
-from Mini_Mario import Mini_Mario
+from Goomba import Goomba
+from Mini_Mario import MiniMario
+from Super_Mushroom import SuperMushroom
 
 
 def handle_events():
@@ -19,9 +21,19 @@ def handle_events():
 
 def init():
     global mario
+    mario = MiniMario()
+    game_world.add_object(mario, 1)
 
-    mario = Mini_Mario()
-    game_world.add_object(mario)
+    goomba = Goomba()
+    game_world.add_object(goomba, 1)
+
+    super_mushroom = SuperMushroom()
+    game_world.add_object(super_mushroom, 1)
+
+    game_world.add_collision_pair('mario-kill', mario, goomba)
+    game_world.add_collision_pair('mario-goomba', mario, goomba)
+    game_world.add_collision_pair('mario-super_mushroom', mario, super_mushroom)
+
 
 def finish():
     game_world.clear()
