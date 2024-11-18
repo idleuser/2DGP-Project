@@ -6,6 +6,7 @@ from Goomba import Goomba
 from Mini_Mario import MiniMario
 from Super_Mushroom import SuperMushroom
 from box import Box
+from item_box import ItemBox
 
 
 def handle_events():
@@ -38,11 +39,14 @@ def init():
     box = Box()
     game_world.add_object(box, 1)
 
+    itembox = ItemBox()
+    game_world.add_object(itembox, 1)
+
     game_world.add_collision_pair('mario-kill', mario, goomba)
     game_world.add_collision_pair('mario-goomba', mario, goomba)
     game_world.add_collision_pair('mario-super_mushroom', mario, super_mushroom)
     game_world.add_collision_pair('mario-box', mario, box)
-
+    game_world.add_collision_pair('mario-itembox', mario, itembox)
 
 def finish():
     game_world.clear()

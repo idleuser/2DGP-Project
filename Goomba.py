@@ -51,7 +51,7 @@ class Goomba:
         return self.x - 25 ,self.y - 20, self.x + 25, self.y
 
     def get_head_box(self):
-        return self.x - 20 ,self.y + 1, self.x + 20, self.y + 20
+        return self.x - 15 ,self.y + 1, self.x + 15, self.y + 20
 
     def handle_collision(self, group, other):
         if group == 'mario-kill':

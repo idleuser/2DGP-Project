@@ -97,12 +97,13 @@ class Jump:
             obj.safe = 0
         if get_time() - obj.time > 0.8:
             obj.state_machine.add_event(('TIME_OUT', obj.run))
-        if obj.y >= 280:
+        if obj.y >= 330:
             obj.limit = True
-        if obj.y < 280 and obj.limit == False:
+        if obj.y < 330 and obj.limit == False:
             obj.y += 50
         elif obj.y > 90:
             obj.y -= 50
+        obj.y = clamp(90, obj.y, 330)
     @staticmethod
     def exit(obj, event):
         pass
@@ -166,6 +167,5 @@ class MiniMario:
                 game_framework.change_mode(title_mode)
         elif group == 'mario-super_mushroom':
             self.life = 2
-        elif group == 'mario-box':
-            self.y = other.y - 25
+        elif group == 'mario-box' or group == 'mario-itembox' or group == 'mario-usedbox':
             self.limit = True
