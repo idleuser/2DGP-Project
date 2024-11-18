@@ -20,10 +20,10 @@ class Idle:
         obj.time = get_time()
         if start_event(event):
             obj.dir = 1
-        elif right_down(event) or left_up(event):
-            obj.dir = -1
-        elif left_down(event) or right_up(event):
-            obj.dir = 1
+        # elif right_down(event) or left_up(event):
+        #     obj.dir = -1
+        # elif left_down(event) or right_up(event):
+        #     obj.dir = 1
     @staticmethod
     def do(obj):
         obj.frame = (obj.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 3
@@ -133,7 +133,7 @@ class MiniMario:
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
+                Idle: {right_down: Run, left_down: Run, space_down: Jump},
                 Jump: {time_out_to_idle: Idle, time_out_to_run : Run},
                 Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
             }
@@ -154,7 +154,7 @@ class MiniMario:
 
     def handle_collision(self, group, other):
         if group == 'mario-kill':
-            pass
+            self.safe = 1
         elif group == 'mario-goomba' and self.safe == 0:
             self.life -= 1
             self.safe = 1

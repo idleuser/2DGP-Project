@@ -20,7 +20,11 @@ def handle_events():
             mario.handle_event(event)
 
 def init():
+    global background
     global mario
+
+    background = load_image('Background.png')
+
     mario = MiniMario()
     game_world.add_object(mario, 1)
 
@@ -45,6 +49,7 @@ def update():
 
 def draw():
     clear_canvas()
+    background.draw(800 / 2, 600 / 2 + 20)
     game_world.render()
     update_canvas()
 
