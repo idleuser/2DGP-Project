@@ -17,36 +17,48 @@ class Idle:
     @staticmethod
     def enter(obj , event):
         obj.frame = 0
+        obj.time = get_time()
         if start_event(event):
             obj.dir = 1
-        # elif right_down(event) or left_up(event):
-        #     obj.dir = -1
-        # elif left_down(event) or right_up(event):
-        #     obj.dir = 1
+        elif right_down(event) or left_up(event):
+            obj.dir = -1
+        elif left_down(event) or right_up(event):
+            obj.dir = 1
     @staticmethod
     def do(obj):
         obj.frame = (obj.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 3
+        if obj.safe and get_time() - obj.time > 1.0:
+            obj.safe = 0
     @staticmethod
     def exit(obj, event):
         pass
     @staticmethod
     def draw(obj):
         if obj.dir == 1:
-            obj.image.clip_draw((int(obj.frame) + 8) * 19, 9 * 24, 19, 24, obj.x, obj.y, 60, 60)
+            if obj.life == 1:
+                obj.image.clip_draw((int(obj.frame) + 8) * 19, 9 * 24, 19, 24, obj.x, obj.y, 60, 60)
+            elif obj.life == 2:
+                obj.image.clip_draw((int(obj.frame) + 8) * 19, 9 * 24, 19, 24, obj.x, obj.y+30, 60, 120)
         elif obj.dir == -1:
-            obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 9 * 24, 19, 24, 0, 'h', obj.x, obj.y, 60, 60)
+            if obj.life == 1:
+                obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 9 * 24, 19, 24, 0, 'h', obj.x, obj.y, 60, 60)
+            elif obj.life == 2:
+                obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 9 * 24, 19, 24, 0, 'h', obj.x, obj.y + 30, 60, 120)
 
 class Run:
     @staticmethod
     def enter(obj, event):
         obj.frame = 0
-        if right_down(event) or left_up(event):  # 오른쪽으로 RUN
+        obj.time = get_time()
+        if right_down(event) or left_up(event):
             obj.dir = 1
-        elif left_down(event) or right_up(event):  # 왼쪽으로 RUN
+        elif left_down(event) or right_up(event):
             obj.dir = -1
 
     @staticmethod
     def do(obj):
+        if obj.safe and get_time() - obj.time > 1.0:
+            obj.safe = 0
         obj.frame = (obj.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 6
         obj.x += obj.dir * RUN_SPEED_PPS * game_framework.frame_time
         obj.x = clamp(0, obj.x, 800)
@@ -61,9 +73,15 @@ class Run:
     @staticmethod
     def draw(obj):
         if obj.dir == 1:
-            obj.image.clip_draw((int(obj.frame) + 8)  * 19, 5 * 24 - 1, 19, 24, obj.x, obj.y, 60, 60)
+            if obj.life == 1:
+                obj.image.clip_draw((int(obj.frame) + 8)  * 19, 5 * 24 - 1, 19, 24, obj.x, obj.y, 60, 60)
+            elif obj.life == 2:
+                obj.image.clip_draw((int(obj.frame) + 8) * 19, 5 * 24 - 1, 19, 24, obj.x, obj.y+30, 60, 120)
         elif obj.dir == -1:
-            obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 5 * 24 - 1, 19, 24, 0, 'h', obj.x, obj.y, 60, 60)
+            if obj.life == 1:
+                obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 5 * 24 - 1, 19, 24, 0, 'h', obj.x, obj.y, 60, 60)
+            elif obj.life == 2:
+                obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 5 * 24 - 1, 19, 24, 0, 'h', obj.x, obj.y + 30, 60, 120)
 
 class Jump:
     @staticmethod
@@ -76,6 +94,8 @@ class Jump:
         obj.frame = (obj.frame + 1) % 6
         if obj.run:
             obj.x += obj.dir * RUN_SPEED_PPS * game_framework.frame_time
+        if obj.safe and get_time() - obj.time > 1.0:
+            obj.safe = 0
         if get_time() - obj.time > 0.8:
             obj.state_machine.add_event(('TIME_OUT', obj.run))
         if obj.y >= 270:
@@ -90,9 +110,15 @@ class Jump:
     @staticmethod
     def draw(obj):
         if obj.dir == 1:
-            obj.image.clip_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, obj.x, obj.y, 60, 60)
+            if obj.life == 1:
+                obj.image.clip_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, obj.x, obj.y, 60, 60)
+            elif obj.life == 2:
+                obj.image.clip_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, obj.x, obj.y + 30, 60, 120)
         elif obj.dir == -1:
-            obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, 0, 'h', obj.x, obj.y, 60, 60)
+            if obj.life == 1:
+                obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, 0, 'h', obj.x, obj.y, 60, 60)
+            elif obj.life == 2:
+                obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, 0, 'h', obj.x, obj.y + 30, 60, 120)
 
 class MiniMario:
     def __init__(self):
@@ -101,6 +127,7 @@ class MiniMario:
         self.dir = 0
         self.run = 0
         self.life = 1
+        self.safe = 0
         self.image = load_image('Mini_Mario.gif')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle)
@@ -127,12 +154,10 @@ class MiniMario:
 
     def handle_collision(self, group, other):
         if group == 'mario-kill':
-            self.life += 1
-            print(self.life)
-        elif group == 'mario-goomba':
+            pass
+        elif group == 'mario-goomba' and self.safe == 0:
             self.life -= 1
-            print(self.life)
-            # 잠시 무적이 되도록 설계
+            self.safe = 1
             if self.life == 0:
                 game_world.remove_object(self)
                 game_framework.change_mode(title_mode)

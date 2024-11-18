@@ -79,3 +79,4 @@ def handle_collisions():
                     print(f'{group} collide')
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
+                    break
