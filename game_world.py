@@ -56,7 +56,7 @@ def collide(a, b):
     if ab > bt: return False
     return True
 
-def kill(a, b):
+def head_collide(a, b):
     al,ab,ar,at = a.get_bb()
     bl,bb,br,bt = b.get_head_box()
 
@@ -70,7 +70,7 @@ def handle_collisions():
     for group, pairs in collision_pairs.items():
         for a in pairs[0]:
             for b in pairs[1]:
-                if group == 'mario-kill' and kill(a,b):
+                if (group == 'mario-kill' or group == 'mario-on') and head_collide(a,b):
                     print(f'{group} kill')
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)

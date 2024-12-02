@@ -6,7 +6,7 @@ import play_mode
 
 def init():
     global image
-    image = load_image('title.png')
+    image = load_image('./resource/title.png')
 
 def handle_events():
     events = get_events()
@@ -20,7 +20,7 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    image.draw(800/2,600/2)
+    image.draw(800/2,500/2)
     update_canvas()
 
 def finish():

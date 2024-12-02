@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
+import server
 from state_machine import *
 
 
@@ -20,9 +21,9 @@ class Goomba:
         self.life = 2
         self.frame = 0
         self.img_y = 0
-        self.image_die = load_image('goomba_die.png')
+        self.image_die = load_image('./resource/goomba_die.png')
         if Goomba.image == None:
-            self.image = load_image('goomba.png')
+            self.image = load_image('./resource/goomba.png')
 
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
@@ -36,22 +37,28 @@ class Goomba:
         self.x = clamp(480, self.x, 790)
 
     def draw(self):
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
         if self.life == 2:
             if self.dir == 1:
                 self.image.clip_composite_draw(int(self.frame) * 120 + 2, self.img_y * 106, 121, 106, 0, 'h',
-                                               self.x, self.y, 60, 50)
+                                               sx, sy, 60, 50)
             elif self.dir == -1:
-                self.image.clip_draw(int(self.frame) * 120 + 2, self.img_y * 106, 121, 106, self.x, self.y, 60, 50)
+                self.image.clip_draw(int(self.frame) * 120 + 2, self.img_y * 106, 121, 106, sx, sy, 60, 50)
         elif self.life == 1:
-            self.image_die.draw(self.x,self.y,70,60)
+            self.image_die.draw(sx,sy,70,60)
         draw_rectangle(*self.get_bb())
         draw_rectangle(*self.get_head_box())
 
     def get_bb(self):
-        return self.x - 25 ,self.y - 20, self.x + 25, self.y
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
+        return sx - 25 ,sy - 20, sx + 25, sy
 
     def get_head_box(self):
-        return self.x - 15 ,self.y + 1, self.x + 15, self.y + 20
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
+        return sx - 15 ,sy + 1, sx + 15, sy + 20
 
     def handle_collision(self, group, other):
         if group == 'mario-kill':

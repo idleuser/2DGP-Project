@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
+import server
 from state_machine import *
 
 
@@ -14,7 +15,7 @@ class SuperMushroom:
         self.x, self.y = 300, 75
         self.dir = 1
         if SuperMushroom.image == None:
-            self.image = load_image('super_mushroom.png')
+            self.image = load_image('./resource/super_mushroom.png')
 
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
@@ -25,11 +26,15 @@ class SuperMushroom:
         self.x = clamp(200, self.x, 355)
 
     def draw(self):
-        self.image.clip_draw(0, 0, 225, 225, self.x, self.y, 40, 40)
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
+        self.image.clip_draw(0, 0, 225, 225, sx, sy, 40, 40)
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 25 ,self.y - 20, self.x + 25, self.y + 20
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
+        return sx - 25 ,sy - 20, sx + 25, sy + 20
 
     def handle_collision(self, group, other):
         if group == 'mario-super_mushroom':

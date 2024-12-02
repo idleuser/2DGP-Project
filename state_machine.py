@@ -7,10 +7,7 @@ def space_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_SPACE
 
 def time_out_to_idle(event):
-    return event[0] == 'TIME_OUT' and event[1] == 0
-
-def time_out_to_run(event):
-    return event[0] == 'TIME_OUT' and event[1] == 1
+    return event[0] == 'TIME_OUT'
 
 def right_down(event):
     return event[0] == 'INPUT' and event[1].type == SDL_KEYDOWN and event[1].key == SDLK_RIGHT

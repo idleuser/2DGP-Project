@@ -6,7 +6,7 @@ class UsedBox:
     def __init__(self, x, y):
         self.x, self.y = x, y
         if UsedBox.image == None:
-            self.image = load_image('used_box.png')
+            self.image = load_image('./resource/used_box.png')
 
     def update(self):
         pass

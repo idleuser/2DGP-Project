@@ -1,10 +1,12 @@
 from pico2d import *
 import game_framework
 import game_world
+import server
 import title_mode
 from Goomba import Goomba
-from Mini_Mario import MiniMario
+from Mario import Mario
 from Super_Mushroom import SuperMushroom
+from background import Background
 from box import Box
 from item_box import ItemBox
 
@@ -19,16 +21,14 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            mario.handle_event(event)
+            server.mario.handle_event(event)
 
 def init():
-    global background
-    global mario
+    server.background = Background()
+    game_world.add_object(server.background, 0)
 
-    background = load_image('Background.png')
-
-    mario = MiniMario()
-    game_world.add_object(mario, 1)
+    server.mario = Mario()
+    game_world.add_object(server.mario, 1)
 
     goomba = Goomba()
     game_world.add_object(goomba, 1)
@@ -42,11 +42,12 @@ def init():
     itembox = ItemBox()
     game_world.add_object(itembox, 1)
 
-    game_world.add_collision_pair('mario-kill', mario, goomba)
-    game_world.add_collision_pair('mario-goomba', mario, goomba)
-    game_world.add_collision_pair('mario-super_mushroom', mario, super_mushroom)
-    game_world.add_collision_pair('mario-box', mario, box)
-    game_world.add_collision_pair('mario-itembox', mario, itembox)
+    game_world.add_collision_pair('mario-kill', server.mario, goomba)
+    game_world.add_collision_pair('mario-goomba', server.mario, goomba)
+    game_world.add_collision_pair('mario-super_mushroom', server.mario, super_mushroom)
+    game_world.add_collision_pair('mario-box', server.mario, box)
+    game_world.add_collision_pair('mario-itembox', server.mario, itembox)
+    game_world.add_collision_pair('mario-on',server.mario, None)
 
 def finish():
     game_world.clear()
@@ -58,7 +59,6 @@ def update():
 
 def draw():
     clear_canvas()
-    background.draw(800 / 2, 600 / 2 + 20)
     game_world.render()
     update_canvas()
 
