@@ -36,6 +36,9 @@ class SuperMushroom:
         sy = self.y - server.background.window_bottom
         return sx - 25 ,sy - 20, sx + 25, sy + 20
 
+    def get_head_box(self):
+        return 0,0,0,0
+
     def handle_collision(self, group, other):
         if group == 'mario-super_mushroom':
             game_world.remove_object(self)

@@ -15,7 +15,6 @@ def add_object(o, depth = 0):
 def add_objects(ol, depth = 0):
     world[depth] += ol
 
-
 def update():
     for layer in world:
         for o in layer:
@@ -70,13 +69,13 @@ def handle_collisions():
     for group, pairs in collision_pairs.items():
         for a in pairs[0]:
             for b in pairs[1]:
-                if (group == 'mario-kill' or group == 'mario-on') and head_collide(a,b):
-                    print(f'{group} kill')
+                if group == 'mario-on' and head_collide(a,b) == True:
+                    print(f'{group} on')
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
-                    break
-                elif collide(a,b) and group != 'mario-kill':
+                    return
+                elif collide(a,b) == True and head_collide(a,b) == False:
                     print(f'{group} collide')
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
-                    break
+                    return

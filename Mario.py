@@ -30,6 +30,9 @@ class Idle:
         obj.frame = (obj.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 3
         if obj.safe and get_time() - obj.time > 1.0:
             obj.safe = 0
+        if obj.next_stage == True and obj.y > 80:
+            #delay(0.1)
+            obj.y -= 5
     @staticmethod
     def exit(obj, event):
         obj.run = 0
@@ -58,6 +61,7 @@ class Run:
         elif left_down(event) or right_up(event):
             obj.dir = -1
         obj.speed = RUN_SPEED_PPS
+        obj.limit_x = False
 
     @staticmethod
     def do(obj):
@@ -89,7 +93,7 @@ class Jump:
     @staticmethod
     def enter(obj, event):
         obj.frame = 0
-        obj.limit = False
+        obj.limit_y = False
         obj.time = get_time()
     @staticmethod
     def do(obj):
@@ -101,10 +105,10 @@ class Jump:
         if get_time() - obj.time > 0.8:
             obj.state_machine.add_event(('TIME_OUT', 0))
         if obj.y >= 330:
-            obj.limit = True
-        if obj.limit == False:
+            obj.limit_y = True
+        if obj.limit_y == False:
             obj.y += 50
-        elif obj.limit == True:
+        elif obj.limit_y == True:
             obj.y -= 50
         obj.y = clamp(80, obj.y, 330)
     @staticmethod
@@ -127,14 +131,18 @@ class Jump:
 
 class Mario:
     def __init__(self):
-        self.x, self.y = 100, 80
+        self.name = 'mario'
+        self.x, self.y = 1300, 80
         self.frame = 0
         self.dir = 0
         self.run = 0
         self.life = 1
         self.safe = 0
         self.speed = 0
-        self.limit = False
+        self.limit_x = False
+        self.limit_y = False
+        self.on_pipe = False
+        self.next_stage = False
         self.image = load_image('./resource/Mini_Mario.gif')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle)
@@ -154,7 +162,10 @@ class Mario:
 
 
     def handle_event(self, event):
-        self.state_machine.add_event(('INPUT', event))
+        if self.on_pipe and event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
+            self.next_stage = True
+        else:
+            self.state_machine.add_event(('INPUT', event))
 
     def draw(self):
         self.state_machine.draw()
@@ -164,24 +175,36 @@ class Mario:
         sx = self.x - server.background.window_left
         sy = self.y - server.background.window_bottom
         if self.life == 1:
-            return sx - 30,sy - 30, sx + 20, sy + 20
+            return sx - 20,sy - 30, sx + 20, sy + 20
         if self.life == 2:
-            return sx - 30, sy - 30, sx + 20, sy + 65
+            return sx - 20, sy - 30, sx + 20, sy + 65
 
     def handle_collision(self, group, other):
-        if group == 'mario-kill':
-            self.safe = 1
-        elif group == 'mario-goomba' and self.safe == 0:
+        self.on_pipe = False
+        if group == 'mario-goomba' and self.safe == 0:
             print(self.safe)
             self.life -= 1
             self.safe = 1
             if self.life == 0:
-                game_world.remove_object(self)
-                game_framework.change_mode(title_mode)
+                pass
+                # game_world.remove_object(self)
+                # game_framework.change_mode(title_mode)
         elif group == 'mario-super_mushroom':
             pass
             #self.life = 2
         elif group == 'mario-box' or group == 'mario-itembox' or group == 'mario-usedbox':
-            self.limit = True
-        # elif group == 'mario-onbox':
-        #     self.y =
+            self.limit_y = True
+        elif group == 'mario-pipe' and self.next_stage == False:
+            self.limit_x = True
+            if other.x > self.x:
+                self.x = other.x - 50
+            elif other.x < self.x:
+                self.x = other.x + 60
+        elif group == 'mario-on':
+            if other.name == 'goomba':
+                self.safe = 1
+            elif other.name == 'box' or other.name == 'item_box' or other.name == 'used_box':
+                self.y = other.y + 55
+            elif other.name == 'pipe' and self.next_stage == False:
+                self.y = other.y + 85
+                self.on_pipe = True

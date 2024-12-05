@@ -1,12 +1,17 @@
 import game_framework
 from pico2d import *
 from sdl2 import *
+
+import game_world
 import play_mode
+from background import Title_background
 
 
 def init():
-    global image
-    image = load_image('./resource/title.png')
+    background = Title_background()
+    game_world.add_object(background, 0)
+
+
 
 def handle_events():
     events = get_events()
@@ -15,17 +20,18 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_RETURN):
+        elif event.type == SDL_KEYDOWN:
             game_framework.change_mode(play_mode)
 
 def draw():
     clear_canvas()
-    image.draw(800/2,500/2)
+    game_world.render()
     update_canvas()
 
 def finish():
-    global image
-    del image
+    game_world.clear()
 
 def update():
-    pass
+    game_world.update()
+    game_world.handle_collisions()
+    delay(0.08)

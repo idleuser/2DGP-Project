@@ -16,6 +16,7 @@ FRAMES_PER_ACTION = 8
 class Goomba:
     image = None
     def __init__(self):
+        self.name = 'goomba'
         self.x, self.y = 600, 75
         self.dir = -1
         self.life = 2
@@ -58,10 +59,10 @@ class Goomba:
     def get_head_box(self):
         sx = self.x - server.background.window_left
         sy = self.y - server.background.window_bottom
-        return sx - 15 ,sy + 1, sx + 15, sy + 20
+        return sx - 10 ,sy + 1, sx + 10, sy + 20
 
     def handle_collision(self, group, other):
-        if group == 'mario-kill':
+        if group == 'mario-on':
             self.life -= 1
             if self.life == 0:
                 game_world.remove_object(self)

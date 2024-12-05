@@ -5,6 +5,7 @@ import server
 import title_mode
 from Goomba import Goomba
 from Mario import Mario
+from Pipe import Pipe
 from Super_Mushroom import SuperMushroom
 from background import Background
 from box import Box
@@ -42,12 +43,21 @@ def init():
     itembox = ItemBox()
     game_world.add_object(itembox, 1)
 
-    game_world.add_collision_pair('mario-kill', server.mario, goomba)
+    pipe = Pipe()
+    game_world.add_object(pipe, 2)
+
     game_world.add_collision_pair('mario-goomba', server.mario, goomba)
     game_world.add_collision_pair('mario-super_mushroom', server.mario, super_mushroom)
     game_world.add_collision_pair('mario-box', server.mario, box)
     game_world.add_collision_pair('mario-itembox', server.mario, itembox)
-    game_world.add_collision_pair('mario-on',server.mario, None)
+    game_world.add_collision_pair('mario-pipe', server.mario, pipe)
+
+    game_world.add_collision_pair('mario-on',server.mario, goomba)
+    game_world.add_collision_pair('mario-on',server.mario, box)
+    game_world.add_collision_pair('mario-on',server.mario, itembox)
+
+    game_world.add_collision_pair('mario-on',server.mario, pipe)
+
 
 def finish():
     game_world.clear()
