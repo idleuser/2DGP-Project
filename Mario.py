@@ -1,4 +1,6 @@
 from pico2d import *
+
+import boss_stage
 import game_world, game_framework
 import server
 import title_mode
@@ -30,9 +32,13 @@ class Idle:
         obj.frame = (obj.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 3
         if obj.safe and get_time() - obj.time > 1.0:
             obj.safe = 0
-        if obj.next_stage == True and obj.y > 80:
-            #delay(0.1)
-            obj.y -= 5
+        if obj.next_stage == True:
+            if obj.y > 100:
+                obj.y -= 5
+            elif obj.y <= 100:
+                obj.x = 100
+                obj.y = 100
+                game_framework.change_mode(boss_stage)
     @staticmethod
     def exit(obj, event):
         obj.run = 0
@@ -130,9 +136,8 @@ class Jump:
                 obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, 0, 'h', sx, sy + 30, 60, 120)
 
 class Mario:
-    def __init__(self):
-        self.name = 'mario'
-        self.x, self.y = 1300, 80
+    def __init__(self, name='None', x=0, y=0, life=0):
+        self.name, self.x, self.y, self.life = name, x, y, life
         self.frame = 0
         self.dir = 0
         self.run = 0
@@ -175,24 +180,21 @@ class Mario:
         sx = self.x - server.background.window_left
         sy = self.y - server.background.window_bottom
         if self.life == 1:
-            return sx - 20,sy - 30, sx + 20, sy + 20
-        if self.life == 2:
+            return sx - 20, sy - 30, sx + 20, sy + 20
+        elif self.life == 2:
             return sx - 20, sy - 30, sx + 20, sy + 65
 
     def handle_collision(self, group, other):
         self.on_pipe = False
         if group == 'mario-goomba' and self.safe == 0:
-            print(self.safe)
             self.life -= 1
             self.safe = 1
             if self.life == 0:
-                pass
-                # game_world.remove_object(self)
-                # game_framework.change_mode(title_mode)
+                game_world.remove_object(self)
+                game_framework.change_mode(title_mode)
         elif group == 'mario-super_mushroom':
-            pass
-            #self.life = 2
-        elif group == 'mario-box' or group == 'mario-itembox' or group == 'mario-usedbox':
+            self.life = 2
+        elif group == 'mario-box' or group == 'mario-item_box' or group == 'mario-used_box':
             self.limit_y = True
         elif group == 'mario-pipe' and self.next_stage == False:
             self.limit_x = True
@@ -201,7 +203,7 @@ class Mario:
             elif other.x < self.x:
                 self.x = other.x + 60
         elif group == 'mario-on':
-            if other.name == 'goomba':
+            if other.name == "goomba":
                 self.safe = 1
             elif other.name == 'box' or other.name == 'item_box' or other.name == 'used_box':
                 self.y = other.y + 55

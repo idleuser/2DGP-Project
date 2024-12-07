@@ -5,13 +5,10 @@ import server
 
 class Box:
     image = None
-    num = 0
 
     def __init__(self):
         self.name = 'box'
-        self.x, self.y = 250 + self.num, 200
-        # if Box.num == 0:
-        #     self.num = 100
+        self.x, self.y = 250, 200
         if Box.image == None:
             self.image = load_image('./resource/box.png')
 

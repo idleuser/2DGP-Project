@@ -11,8 +11,8 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 class SuperMushroom:
     image = None
-    def __init__(self):
-        self.x, self.y = 300, 75
+    def __init__(self, name='None', x=0, y=0):
+        self.name, self.x, self.y = name, x, y
         self.dir = 1
         if SuperMushroom.image == None:
             self.image = load_image('./resource/super_mushroom.png')

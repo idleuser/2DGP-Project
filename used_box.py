@@ -32,7 +32,4 @@ class UsedBox:
         return sx - 25 ,sy + 1, sx + 25, sy + 24
 
     def handle_collision(self, group, other):
-        if group == 'mario-on':
-            return
-        elif group == 'mario-usedbox':
-            pass
+        pass

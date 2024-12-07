@@ -7,9 +7,8 @@ from used_box import UsedBox
 
 class ItemBox:
     image = None
-    def __init__(self):
-        self.name = 'item_box'
-        self.x, self.y = 200, 200
+    def __init__(self, name='None', x=0, y=0):
+        self.name, self.x, self.y = name, x, y
         if ItemBox.image == None:
             self.image = load_image('./resource/item_box.png')
 
@@ -36,14 +35,14 @@ class ItemBox:
     def handle_collision(self, group, other):
         if group == 'mario-on':
             return
-        elif group == 'mario-itembox':
-            usedbox = UsedBox(self.x, self.y)
+        elif group == 'mario-item_box':
             game_world.remove_object(self)
-            game_world.add_object(usedbox)
-            game_world.add_collision_pair('mario-usedbox', server.mario, usedbox)
-            game_world.add_collision_pair('mario-on', server.mario, usedbox)
+
+            used_box = UsedBox(self.x, self.y)
+            game_world.add_object(used_box)
+            game_world.add_collision_pair('mario-used_box', server.mario, used_box)
+            game_world.add_collision_pair('mario-on', server.mario, used_box)
+
             fireflower = Fireflower(self.x, self.y + 50)
             game_world.add_object(fireflower)
             game_world.add_collision_pair('mario-fireflower', server.mario, fireflower)
-
-            # handle_collision으로 반복문에서 딕셔너리를 사용하고 있는데, 딕셔너리에 추가할 수 없는 문제

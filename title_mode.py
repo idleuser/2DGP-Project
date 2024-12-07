@@ -1,17 +1,13 @@
 import game_framework
 from pico2d import *
-from sdl2 import *
-
 import game_world
 import play_mode
 from background import Title_background
 
 
 def init():
-    background = Title_background()
-    game_world.add_object(background, 0)
-
-
+    global title_background # title이 문제
+    title_background = Title_background()
 
 def handle_events():
     events = get_events()
@@ -25,13 +21,11 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    game_world.render()
+    title_background.draw()
     update_canvas()
 
 def finish():
-    game_world.clear()
+    pass
 
 def update():
-    game_world.update()
-    game_world.handle_collisions()
-    delay(0.08)
+    pass

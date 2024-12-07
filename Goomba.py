@@ -15,16 +15,14 @@ FRAMES_PER_ACTION = 8
 
 class Goomba:
     image = None
-    def __init__(self):
-        self.name = 'goomba'
-        self.x, self.y = 600, 75
+    def __init__(self, name='Noname', x=0, y=0, life=0):
+        self.name, self.x, self.y, self.life = name, x, y, life
         self.dir = -1
-        self.life = 2
         self.frame = 0
         self.img_y = 0
-        self.image_die = load_image('./resource/goomba_die.png')
         if Goomba.image == None:
             self.image = load_image('./resource/goomba.png')
+            self.image_die = load_image('./resource/goomba_die.png')
 
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
@@ -42,8 +40,7 @@ class Goomba:
         sy = self.y - server.background.window_bottom
         if self.life == 2:
             if self.dir == 1:
-                self.image.clip_composite_draw(int(self.frame) * 120 + 2, self.img_y * 106, 121, 106, 0, 'h',
-                                               sx, sy, 60, 50)
+                self.image.clip_composite_draw(int(self.frame) * 120 + 2, self.img_y * 106, 121, 106, 0, 'h',sx, sy, 60, 50)
             elif self.dir == -1:
                 self.image.clip_draw(int(self.frame) * 120 + 2, self.img_y * 106, 121, 106, sx, sy, 60, 50)
         elif self.life == 1:

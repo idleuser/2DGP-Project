@@ -3,9 +3,8 @@ import server
 
 class Pipe:
     image = None
-    def __init__(self):
-        self.name = 'pipe'
-        self.x, self.y = 1520, 100
+    def __init__(self, name='None', x=0, y=0):
+        self.name, self.x, self.y = name, x, y
         self.image = load_image('./resource/pipe.png')
 
 
