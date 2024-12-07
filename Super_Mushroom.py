@@ -11,19 +11,22 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 class SuperMushroom:
     image = None
-    def __init__(self, name='None', x=0, y=0):
-        self.name, self.x, self.y = name, x, y
+    def __init__(self, x=0, y=0):
+        self.name = 'super_mushroom'
+        self.x, self.y = x, y
         self.dir = 1
         if SuperMushroom.image == None:
             self.image = load_image('./resource/super_mushroom.png')
 
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
-        if self.x > 355:
+        if self.x > 300 and self.y > 80:
+            self.y -= 20
+        elif self.x > 355:
             self.dir = -1
-        elif self.x < 200:
+        elif self.x < 0:
             self.dir = 1
-        self.x = clamp(200, self.x, 355)
+        self.x = clamp(0, self.x, 355)
 
     def draw(self):
         sx = self.x - server.background.window_left

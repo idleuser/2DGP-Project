@@ -6,6 +6,8 @@ import server
 import title_mode
 from Bowser import Bowser
 from background import Boss_background
+from stepping_stone import SteppingStone
+
 
 def handle_events():
     events = get_events()
@@ -33,14 +35,24 @@ def init():
                 bowser = Bowser()
                 bowser.__dict__.update(item)
                 game_world.add_object(bowser, 1)
+            elif item["name"] == 'stepping_stone1':
+                stepping_stone1 = SteppingStone()
+                stepping_stone1.__dict__.update(item)
+                game_world.add_object(stepping_stone1, 1)
+            elif item["name"] == 'stepping_stone2':
+                stepping_stone2 = SteppingStone()
+                stepping_stone2.__dict__.update(item)
+                game_world.add_object(stepping_stone2, 1)
 
+    game_world.add_collision_pair('mario-on', server.mario, stepping_stone1)
+    game_world.add_collision_pair('mario-on', server.mario, stepping_stone2)
 
 def finish():
     game_world.clear()
 
 def update():
     game_world.update()
-    #game_world.handle_collisions()
+    game_world.handle_collisions()
     delay(0.08)
 
 def draw():

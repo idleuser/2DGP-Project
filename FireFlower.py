@@ -6,7 +6,7 @@ import server
 class  Fireflower:
     image = None
     def __init__(self, x, y):
-        self.name = 'fireflower'
+        self.name = 'fire_flower'
         self.x, self.y = x, y
         if Fireflower.image == None:
             self.image = load_image('./resource/Fireflower.png')
@@ -29,5 +29,5 @@ class  Fireflower:
         return 0,0,0,0
 
     def handle_collision(self, group, other):
-        if group == 'mario-fireflower':
+        if group == 'mario-fire_flower':
             game_world.remove_object(self)

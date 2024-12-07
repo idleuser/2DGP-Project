@@ -39,34 +39,50 @@ def init():
                 goomba = Goomba()
                 goomba.__dict__.update(item)
                 game_world.add_object(goomba, 1)
-            elif item["name"] == 'super_mushroom':
-                super_mushroom = SuperMushroom()
-                super_mushroom.__dict__.update(item)
-                game_world.add_object(super_mushroom, 1)
-            elif item["name"] == 'box':
-                box = Box()
-                box.__dict__.update(item)
-                game_world.add_object(box, 1)
-            elif item["name"] == 'item_box':
-                item_box = ItemBox()
-                item_box.__dict__.update(item)
-                game_world.add_object(item_box, 1)
-            elif item["name"] == 'pipe':
-                pipe = Pipe()
-                pipe.__dict__.update(item)
-                game_world.add_object(pipe, 2)
+            elif item["name"] == 'box1':
+                box1 = Box()
+                box1.__dict__.update(item)
+                game_world.add_object(box1, 1)
+            elif item["name"] == 'box2':
+                box2 = Box()
+                box2.__dict__.update(item)
+                game_world.add_object(box2, 1)
+            elif item["name"] == 'box3':
+                box3 = Box()
+                box3.__dict__.update(item)
+                game_world.add_object(box3, 1)
+            elif item["name"] == 'item_box1':
+                item_box1 = ItemBox()
+                item_box1.__dict__.update(item)
+                game_world.add_object(item_box1, 1)
+            elif item["name"] == 'item_box2':
+                item_box2 = ItemBox()
+                item_box2.__dict__.update(item)
+                game_world.add_object(item_box2, 1)
+            elif item["name"] == 'pipe1':
+                pipe1 = Pipe()
+                pipe1.__dict__.update(item)
+                game_world.add_object(pipe1, 2)
+            elif item["name"] == 'pipe2':
+                pipe2 = Pipe()
+                pipe2.__dict__.update(item)
+                game_world.add_object(pipe2, 2)
 
     game_world.add_collision_pair('mario-goomba', server.mario, goomba)
-    game_world.add_collision_pair('mario-super_mushroom', server.mario, super_mushroom)
-    game_world.add_collision_pair('mario-box', server.mario, box)
-    game_world.add_collision_pair('mario-item_box', server.mario, item_box)
-    game_world.add_collision_pair('mario-pipe', server.mario, pipe)
+    game_world.add_collision_pair('mario-box', server.mario, box1)
+    game_world.add_collision_pair('mario-box', server.mario, box2)
+    game_world.add_collision_pair('mario-box', server.mario, box3)
+    game_world.add_collision_pair('mario-item_box1', server.mario, item_box1)
+    game_world.add_collision_pair('mario-item_box2', server.mario, item_box2)
+    game_world.add_collision_pair('mario-pipe', server.mario, pipe1)
+    game_world.add_collision_pair('mario-pipe', server.mario, pipe2)
 
     game_world.add_collision_pair('mario-on',server.mario, goomba)
-    game_world.add_collision_pair('mario-on',server.mario, box)
-    game_world.add_collision_pair('mario-on',server.mario, item_box)
-
-    game_world.add_collision_pair('mario-on',server.mario, pipe)
+    game_world.add_collision_pair('mario-on',server.mario, box1)
+    game_world.add_collision_pair('mario-on',server.mario, item_box1)
+    game_world.add_collision_pair('mario-on',server.mario, item_box2)
+    game_world.add_collision_pair('mario-on', server.mario, pipe1)
+    game_world.add_collision_pair('mario-on', server.mario, pipe2)
 
 
 def finish():

@@ -6,9 +6,8 @@ import server
 class Box:
     image = None
 
-    def __init__(self):
-        self.name = 'box'
-        self.x, self.y = 250, 200
+    def __init__(self, name='None', x=0, y=0):
+        self.name, self.x, self.y = name, x, y
         if Box.image == None:
             self.image = load_image('./resource/box.png')
 

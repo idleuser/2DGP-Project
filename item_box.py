@@ -2,6 +2,7 @@ from pico2d import *
 import game_world
 import server
 from FireFlower import Fireflower
+from Super_Mushroom import SuperMushroom
 from used_box import UsedBox
 
 
@@ -35,14 +36,25 @@ class ItemBox:
     def handle_collision(self, group, other):
         if group == 'mario-on':
             return
-        elif group == 'mario-item_box':
+        elif group == 'mario-item_box1':
             game_world.remove_object(self)
 
-            used_box = UsedBox(self.x, self.y)
-            game_world.add_object(used_box)
-            game_world.add_collision_pair('mario-used_box', server.mario, used_box)
-            game_world.add_collision_pair('mario-on', server.mario, used_box)
+            used_box1 = UsedBox(self.x, self.y)
+            game_world.add_object(used_box1)
+            game_world.add_collision_pair('mario-used_box', server.mario, used_box1)
+            game_world.add_collision_pair('mario-on', server.mario, used_box1)
+
+            super_mushroom = SuperMushroom(self.x, self.y + 50)
+            game_world.add_object(super_mushroom)
+            game_world.add_collision_pair('mario-super_mushroom', server.mario, super_mushroom)
+        elif group == 'mario-item_box2':
+            game_world.remove_object(self)
+
+            used_box2 = UsedBox(self.x, self.y)
+            game_world.add_object(used_box2)
+            game_world.add_collision_pair('mario-used_box', server.mario, used_box2)
+            game_world.add_collision_pair('mario-on', server.mario, used_box2)
 
             fireflower = Fireflower(self.x, self.y + 50)
             game_world.add_object(fireflower)
-            game_world.add_collision_pair('mario-fireflower', server.mario, fireflower)
+            game_world.add_collision_pair('mario-fire_flower', server.mario, fireflower)

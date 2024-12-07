@@ -4,6 +4,7 @@ import boss_stage
 import game_world, game_framework
 import server
 import title_mode
+from FireBall import fireBall
 from state_machine import *
 
 
@@ -39,9 +40,15 @@ class Idle:
                 obj.x = 100
                 obj.y = 100
                 game_framework.change_mode(boss_stage)
+        elif obj.is_on == False and obj.y > 80:
+            obj.y -= 40
+            if obj.y < 80:
+                obj.y = 80
     @staticmethod
     def exit(obj, event):
         obj.run = 0
+        if fire(event):
+            obj.fireball()
     @staticmethod
     def draw(obj):
         sx = obj.x - server.background.window_left
@@ -75,10 +82,16 @@ class Run:
             obj.safe = 0
         obj.frame = (obj.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 6
         obj.x += obj.dir * RUN_SPEED_PPS * game_framework.frame_time
+        if obj.is_on == False and obj.y > 80:
+            obj.y -= 40
+            if obj.y < 80:
+                obj.y = 80
 
     @staticmethod
     def exit(obj, event):
         obj.run = 1
+        if fire(event):
+            obj.fireball()
 
     @staticmethod
     def draw(obj):
@@ -101,6 +114,7 @@ class Jump:
         obj.frame = 0
         obj.limit_y = False
         obj.time = get_time()
+        obj.is_on = True
     @staticmethod
     def do(obj):
         obj.frame = (obj.frame + 1) % 6
@@ -119,7 +133,8 @@ class Jump:
         obj.y = clamp(80, obj.y, 330)
     @staticmethod
     def exit(obj, event):
-        pass
+        if fire(event):
+            obj.fireball()
     @staticmethod
     def draw(obj):
         sx = obj.x - server.background.window_left
@@ -147,6 +162,7 @@ class Mario:
         self.limit_x = False
         self.limit_y = False
         self.on_pipe = False
+        self.is_on = False
         self.next_stage = False
         self.image = load_image('./resource/Mini_Mario.gif')
         self.state_machine = StateMachine(self)
@@ -161,10 +177,9 @@ class Mario:
 
     def update(self):
         self.state_machine.update()
-
+        self.is_on = False
         self.x = clamp(25.0, self.x, server.background.w - 25.0)
         self.y = clamp(30.0, self.y, server.background.h - 45.0)
-
 
     def handle_event(self, event):
         if self.on_pipe and event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
@@ -184,6 +199,11 @@ class Mario:
         elif self.life == 2:
             return sx - 20, sy - 30, sx + 20, sy + 65
 
+    def fire_ball(self):
+        fire_ball = fireBall(self.x, self.y - 10, self.dir)
+        game_world.add_object(fire_ball)
+        game_world.add_collision_pair('goomba-fireball', None, fire_ball)
+
     def handle_collision(self, group, other):
         self.on_pipe = False
         if group == 'mario-goomba' and self.safe == 0:
@@ -194,7 +214,10 @@ class Mario:
                 game_framework.change_mode(title_mode)
         elif group == 'mario-super_mushroom':
             self.life = 2
-        elif group == 'mario-box' or group == 'mario-item_box' or group == 'mario-used_box':
+        elif group == 'mario-fire_flower':
+            #self.life = 3
+            pass
+        elif group == 'mario-box' or group == 'mario-item_box1' or group == 'mario-item_box2' or group == 'mario-used_box':
             self.limit_y = True
         elif group == 'mario-pipe' and self.next_stage == False:
             self.limit_x = True
@@ -205,8 +228,14 @@ class Mario:
         elif group == 'mario-on':
             if other.name == "goomba":
                 self.safe = 1
-            elif other.name == 'box' or other.name == 'item_box' or other.name == 'used_box':
+            elif other.name == 'box1' or other.name == 'box2' or other.name == 'box3' or other.name == 'item_box1' or other.name == 'item_box2' or other.name == 'used_box':
+                self.is_on = True
                 self.y = other.y + 55
-            elif other.name == 'pipe' and self.next_stage == False:
+            elif other.name == 'pipe1':
                 self.y = other.y + 85
                 self.on_pipe = True
+            elif other.name == 'pipe2' and self.next_stage == False:
+                self.y = other.y + 85
+                self.on_pipe = True
+            elif other.name == 'stepping_stone1' or other.name == 'stepping_stone2':
+                self.y = other.y + 35

@@ -56,7 +56,7 @@ class Goomba:
     def get_head_box(self):
         sx = self.x - server.background.window_left
         sy = self.y - server.background.window_bottom
-        return sx - 10 ,sy + 1, sx + 10, sy + 20
+        return sx - 15 ,sy + 1, sx + 15, sy + 20
 
     def handle_collision(self, group, other):
         if group == 'mario-on':
