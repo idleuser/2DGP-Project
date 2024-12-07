@@ -11,7 +11,7 @@ PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_MPS = 5
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-TIME_PER_ACTION = 0.5
+TIME_PER_ACTION = 1.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
@@ -136,7 +136,7 @@ class Jump:
                 obj.image.clip_composite_draw((int(obj.frame) + 8)  * 19, 6 * 24, 19, 24, 0, 'h', sx, sy + 30, 60, 120)
 
 class Mario:
-    def __init__(self, name='None', x=0, y=0, life=0):
+    def __init__(self, name='Mario', x=100, y=120, life=2):
         self.name, self.x, self.y, self.life = name, x, y, life
         self.frame = 0
         self.dir = 0
