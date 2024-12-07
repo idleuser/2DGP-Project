@@ -7,7 +7,7 @@ from Goomba import Goomba
 from Mario import Mario
 from Pipe import Pipe
 from Super_Mushroom import SuperMushroom
-from background import Background
+from background import Background, Boss_background
 from box import Box
 from item_box import ItemBox
 
@@ -21,6 +21,12 @@ def handle_events():
             game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
+            print('Save Completed!')
+            game_world.save()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_l:
+            print('Load Completed!')
+            load_saved_world()
         else:
             server.mario.handle_event(event)
 
@@ -103,3 +109,13 @@ def pause():
 
 def resume():
     pass
+
+def load_saved_world():
+    game_world.load()
+    for obj in game_world.all_objects():
+        if isinstance(obj, Mario):
+            server.mario = obj
+        elif isinstance(obj, Background):
+            server.background = obj
+        elif isinstance(obj, Boss_background):
+            server.background = obj

@@ -24,6 +24,14 @@ class Goomba:
             self.image = load_image('./resource/goomba.png')
             self.image_die = load_image('./resource/goomba_die.png')
 
+    def __getstate__(self):
+        info = {'name': self.name, 'x':self.x, 'y': self.y, 'life':self.life}
+        return info
+
+    def __setstate__(self, state):
+        self.__init__()
+        self.__dict__.update(state)
+
     def update(self):
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
         self.frame = (self.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % 8

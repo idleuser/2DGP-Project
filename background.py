@@ -8,6 +8,12 @@ class Title_background:
         self.bgm.set_volume(32)
         self.bgm.repeat_play()
 
+    def __getstate__(self):
+        return {}
+
+    def __setstate__(self, state):
+        self.__init__()
+
     def draw(self):
         self.image.draw(800 / 2, 500 / 2)
 
@@ -27,6 +33,12 @@ class Background:
         self.bgm = load_music('bgm/World1.mp3')
         self.bgm.set_volume(32)
         self.bgm.repeat_play()
+
+    def __getstate__(self):
+        return {}
+
+    def __setstate__(self, state):
+        self.__init__()
 
     def draw(self):
         self.image.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
@@ -49,6 +61,12 @@ class Boss_background:
         self.bgm = load_music('bgm/Final_Boss.mp3')
         self.bgm.set_volume(32)
         self.bgm.repeat_play()
+
+    def __getstate__(self):
+        return {}
+
+    def __setstate__(self, state):
+        self.__init__()
 
     def draw(self):
         self.image.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)

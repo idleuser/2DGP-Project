@@ -2,7 +2,9 @@ import game_framework
 from pico2d import *
 import game_world
 import play_mode
-from background import Title_background
+import server
+from Mario import Mario
+from background import Title_background, Background, Boss_background
 
 
 def init():

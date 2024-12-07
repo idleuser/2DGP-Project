@@ -18,6 +18,9 @@ def handle_events():
             game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
+            print('Save Completed!')
+            game_world.save()
         else:
             server.mario.handle_event(event)
 

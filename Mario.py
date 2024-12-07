@@ -175,6 +175,14 @@ class Mario:
             }
         )
 
+    def __getstate__(self):
+        info = {'name': self.name, 'x':self.x, 'y': self.y, 'life':self.life, 'next_stage': self.next_stage}
+        return info
+
+    def __setstate__(self, state):
+        self.__init__()
+        self.__dict__.update(state)
+
     def update(self):
         self.state_machine.update()
         self.is_on = False

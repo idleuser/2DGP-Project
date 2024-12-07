@@ -27,6 +27,14 @@ class Bowser:
         self.time = 0
         self.build_behavior_tree()
 
+    def __getstate__(self):
+        info = {'name': self.name, 'x':self.x, 'y': self.y, 'life': self.life}
+        return info
+
+    def __setstate__(self, state):
+        self.__init__()
+        self.__dict__.update(state)
+
     def update(self):
         self.tx, self.ty = server.mario.x, server.mario.y
         self.frame = (self.frame + (FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)) % FRAMES_PER_ACTION + 1

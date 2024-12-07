@@ -8,6 +8,13 @@ class Pipe:
         if Pipe.image == None:
             self.image = load_image('./resource/pipe.png')
 
+    def __getstate__(self):
+        info = {'name': self.name, 'x':self.x, 'y': self.y}
+        return info
+
+    def __setstate__(self, state):
+        self.__init__()
+        self.__dict__.update(state)
 
     def update(self):
         pass

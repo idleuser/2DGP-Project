@@ -1,3 +1,5 @@
+import pickle
+
 world = [[] for _ in range(3)]
 collision_pairs = {}
 
@@ -79,3 +81,21 @@ def handle_collisions():
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
                     return
+
+def all_objects():
+    for layer in world:
+        for obj in layer:
+            yield obj
+
+
+def save():
+    game = [world, collision_pairs]
+    with open('game.save', 'wb') as f:
+        pickle.dump(game, f)
+
+
+def load():
+    global world, collision_pairs
+    with open('game.save', 'rb') as f:
+        game = pickle.load(f)
+        world, collision_pairs = game[0], game[1]
