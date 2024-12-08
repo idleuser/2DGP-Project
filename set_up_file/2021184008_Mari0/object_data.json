@@ -1,0 +1,14 @@
+[
+  {"name": "Mario", "x": 100, "y":  80, "life" : 1},
+  {"name": "goomba" , "x": 600, "y":  75, "life" : 2},
+  {"name": "box1", "x": 250, "y":  200},
+  {"name": "box2", "x": 1000, "y":  200},
+  {"name": "box3", "x": 1100, "y":  200},
+  {"name": "item_box1", "x": 200, "y":  200},
+  {"name": "item_box2", "x": 1050, "y":  200},
+  {"name": "pipe1", "x": 400, "y":  100},
+  {"name": "pipe2", "x": 1520, "y":  100},
+  {"name": "Bowser", "x": 600, "y": 130, "life": 10},
+  {"name": "stepping_stone1", "x": 300, "y":  200},
+  {"name": "stepping_stone2", "x": 500, "y":  200}
+]
